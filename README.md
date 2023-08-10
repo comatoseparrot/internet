@@ -1,6 +1,5 @@
-# js
 
-# My Project
+# js
 
 This project includes a canvas drawing using the `init` function, inspired by the solution provided on Stack Overflow.
 
