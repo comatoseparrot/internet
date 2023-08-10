@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+body {
+    /*background-color: black;*/
+}
+/*
+body, html {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+canvas {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+}*/
+
+</style>
+<body>
+<canvas id="canvas"></canvas>
+    <script>
+        /*
+        var canvas = document.getElementById('myCanvas'); 
+        var ctx = canvas.getContext('2d');
+        ctx.fillStyle = 'rgb(189, 147, 249)';
+        ctx.fillRect(0, 0, 80, 80)
+        */
+function init() {
+    const canvas = document.getElementById('canvas');
+    const context = canvas.getContext('2d');
+
+  // Resize the canvas to fill browser window dynamically
+window.addEventListener('resize', resizeCanvas, false);
+
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+                
+    // Drawings here to avoid reset (canvas clearing) when resizing browser window
+    drawStuff(); 
+}
+
+resizeCanvas();
+
+function drawStuff() {
+    // Drawings
+    context.fillStyle = 'rgb(129, 135, 227)';
+    context.fillRect(30, 30, 75, 75)
+    context.fillStyle = 'rgb(203, 0, 10)';
+    context.fillRect(91, 91, 75, 75)
+    context.fillStyle = 'rgb(255, 148, 254, 0.5)';
+    context.fillRect(152, 152, 75, 75)
+    
+}
+}   
+
+init(); // Initialize
+    </script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+body {
+    /*background-color: black;*/
+}
+
+</style>
+<body>
+<canvas id="canvas"></canvas>
+
+    <script>
+function init() {
+    const canvas = document.getElementById('canvas');
+    const context = canvas.getContext('2d');
+
+  // Resize the canvas to fill browser window dynamically
+window.addEventListener('resize', resizeCanvas, false);
+
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+                
+    // Drawings here to avoid reset (canvas clearing) when resizing browser window
+    drawStuff(); 
+}
+
+resizeCanvas();
+
+function drawStuff() {
+    // Drawings
+    // Single line
+    context.beginPath()
+    context.moveTo(500,82);
+    context.lineTo(700,280);
+    context.stroke(); // Draw
+
+    context.strokeStyle = 'rgb(243, 157, 251, 0.8)'; // Pink color
+
+    // Triangle
+    context.beginPath()
+    context.moveTo(580,202);
+    context.lineTo(640,362);
+    context.lineTo(800,381);
+    context.lineTo(580,202);
+    context.stroke(); // Draw
+    context.fillStyle = 'rgba(243, 157, 251, 0.8)'; // Pink color
+    context.fill(); // Fill shape
+
+}
+}   
+
+init(); // Initialize
+    </script>
+</body>
+</html>
