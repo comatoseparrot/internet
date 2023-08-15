@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+        canvas {
+        border: 1px solid black;
+        padding-left: 0;
+        padding-right: 0;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;       
+    }
+</style>
+<body>
+    <canvas id="myCanvas" width="600" height="600"></canvas>
+
+    <script>
+    function draw() {
+    const c = document.getElementById("myCanvas");
+    const ctx = c.getContext("2d");
+
+
+    // Create a Gradient
+    const grd = ctx.createLinearGradient(30, 30, 430, 30);
+    grd.addColorStop(0, "red");
+    grd.addColorStop(1, "blue");
+
+    ctx.fillStyle = grd;
+    ctx.fillRect(30, 30, 400, 200)
+
+
+    }    
+    draw();
+    </script>    
+    </body>
+    </html>
+    
