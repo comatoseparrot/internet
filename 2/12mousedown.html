@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+        canvas {
+        border: 1px solid black;
+        padding-left: 0;
+        padding-right: 0;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;       
+    }
+</style>
+<body>
+    <canvas id="myCanvas" width="600" height="600"></canvas>
+    
+    <script>
+    //initialize
+    const canvas = document.getElementById("myCanvas");
+    const ctx = canvas.getContext("2d");
+
+    function drawClick(x, y) {
+    ctx.beginPath();
+    ctx.arc(x, y, 30, 0, 2 * Math.PI);
+    ctx.strokeStyle = "red";
+    ctx.stroke();
+    ctx.fillStyle = "rgb(250, 0, 0, .5)";
+    ctx.fill();
+    }
+
+    canvas.addEventListener("mousedown", function(e) {
+        drawClick(e.offsetX, e.offsetY); //clientX, clientY are coordinates of the viewport not canvas
+        console.log(e)
+        console.log(e.type)
+    });
+
+    
+
+    </script>    
+    </body>
+    </html>
+    
