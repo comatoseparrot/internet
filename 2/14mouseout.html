@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+        canvas {
+        border: 1px solid black;
+        padding-left: 0;
+        padding-right: 0;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;       
+    }
+</style>
+<body>
+    <canvas id="myCanvas" width="600" height="600"></canvas>
+    
+    <script>
+    // Initialize
+    const canvas = document.getElementById("myCanvas");
+    const ctx = canvas.getContext("2d");
+
+    let isMouseOut = 1; //handle mouseOut event (even = square, odd = circle)
+    let color;
+    ctx.strokeStyle = "black";
+    //ctx.fillStyle = "rgb(250, 0, 0, .5)";
+
+    // FUNCTIONS
+    function drawClick(x, y) {
+    if (isMouseOut % 2 === 0){
+        ctx.beginPath();
+        ctx.strokeStyle = "black";
+        ctx.lineWidth = 2;
+        ctx.fillRect(x - 30, y - 30, 60, 60); 
+        ctx.strokeRect(x - 30, y - 30, 60, 60); // Draw outline  
+    } else {
+        ctx.beginPath();
+        ctx.lineWidth = 2;
+        ctx.arc(x, y, 30, 0, 2 * Math.PI);
+        ctx.stroke();
+        ctx.fill();  
+    }
+    }
+
+    function random_rgba() {
+    let o = Math.round, r = Math.random, s = 255;
+    return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ',' + r().toFixed(1) + ')';
+    }
+
+    //g.fillStyle   = color; to change filler
+    //g.strokeStyle = color; to change outline
+
+    // EVENTS
+    canvas.addEventListener("mousedown", function(e) {
+        drawClick(e.offsetX, e.offsetY); //clientX, clientY are coordinates of the viewport not canvas
+        console.log(e)
+        console.log(e.type)
+    });
+
+    canvas.addEventListener("mouseover", function(e) {
+    //color logic here
+    color = random_rgba();
+    ctx.fillStyle = color;
+    console.log(e)
+    console.log(e.type)
+    });
+
+    canvas.addEventListener("mouseout", function(e) {
+    console.log(e)
+    console.log(e.type)
+    isMouseOut++;
+    });
+
+    </script>    
+    </body>
+    </html>
+    
