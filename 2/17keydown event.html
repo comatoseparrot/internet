@@ -45,9 +45,9 @@
         // start
         start();
 
-        //fuctions
+        //FUNCTIONS
 
-        // crear color
+        // create color
         function random_rgba() {
             let o = Math.round, r = Math.random, s = 255;
             return 'rgba(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ',' + r().toFixed(1) + ')';
@@ -69,8 +69,8 @@
             ctx.strokeRect(x, y, 50, 50);
         }
 
-                // call fps counter
-                document.addEventListener('DOMContentLoaded', function () {
+        // call fps counter
+        document.addEventListener('DOMContentLoaded', function () {
         console.log("JavaScript loaded");
         inicio.iniciarJuego();
         }, false);
@@ -82,35 +82,35 @@
             }
         };
 
-    // fps counter
-    let buclePrincipal = {
-    idEjecucion: null,
-    ultimoRegistro: 0,
-    aps: 0,
-    fps: 0,
+        // fps counter
+        let buclePrincipal = {
+        idEjecucion: null,
+        ultimoRegistro: 0,
+        aps: 0,
+        fps: 0,
 
-    iterar: function(registroTemporal) {
-        buclePrincipal.idEjecucion = window.requestAnimationFrame(buclePrincipal.iterar);
-        buclePrincipal.actualizar(registroTemporal);
-        buclePrincipal.dibujar();
+        iterar: function(registroTemporal) {
+            buclePrincipal.idEjecucion = window.requestAnimationFrame(buclePrincipal.iterar);
+            buclePrincipal.actualizar(registroTemporal);
+            buclePrincipal.dibujar();
 
-        if(registroTemporal - buclePrincipal.ultimoRegistro > 999) {
-            buclePrincipal.ultimoRegistro = registroTemporal;
-            console.log(`APS: ${buclePrincipal.aps} | FPS: ${buclePrincipal.fps}`);
-            buclePrincipal.aps = 0;
-            buclePrincipal.fps = 0;
-        }
-    },
+            if(registroTemporal - buclePrincipal.ultimoRegistro > 999) {
+                buclePrincipal.ultimoRegistro = registroTemporal;
+                console.log(`APS: ${buclePrincipal.aps} | FPS: ${buclePrincipal.fps}`);
+                buclePrincipal.aps = 0;
+                buclePrincipal.fps = 0;
+            }
+        },
 
-    detener: function() {
-    },
-    actualizar: function(registroTemporal) {
-        buclePrincipal.aps++;
-    },
-    dibujar: function(registroTemporal) {
-        buclePrincipal.fps++;
-    },
-};
+        detener: function() {
+        },
+        actualizar: function(registroTemporal) {
+            buclePrincipal.aps++;
+        },
+        dibujar: function(registroTemporal) {
+            buclePrincipal.fps++;
+        },
+    };
     </script>
 </body>
 </html>
