@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    canvas {
+        border: 1px solid black;
+        padding-left: 0;
+        padding-right: 0;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
+</style>
+<body>
+    <canvas id="myCanvas" width="500" height="500"></canvas>
+    
+    <script>
+
+        const canvas = document.getElementById("myCanvas");
+        const ctx = canvas.getContext("2d");
+        let x = 225, y = 225; // Initial coordinates
+        let color;
+        let dir;
+        let speed = 10;
+
+        (function () {
+            var requestAnimationFrame =
+                window.requestAnimationFrame ||
+                window.mozRequestAnimationFrame ||
+                window.webkitRequestAnimationFrame ||
+                window.msRequestAnimationFrame;
+            window.requestAnimationFrame = requestAnimationFrame;
+        })();
+
+        document.addEventListener("keydown", (e) => {
+            switch (e.key) {
+                case "w":
+                    y -= speed;
+                    dir = 1;
+                    break;
+                case "s":
+                    y += speed;
+                    dir = 2;
+                    break;
+                case "a":
+                    x -= speed;
+                    dir = 3;
+                    break;
+                case "d":
+                    x += speed;
+                    dir = 4;
+                    break;
+            }
+            update();
+        });
+
+        document.addEventListener("keydown", (e) => {
+        if (e.key === " ") { 
+            speed+=10;
+            }
+        });
+
+
+        function update(){
+
+            if (y+50 <0) { // teleport from UP to DOWN
+                y= 550;
+            }  
+            if (x+50 <0) { // teleport from LEFT to RIGHT
+                x = 550;
+            } 
+            if (y-50 > canvas.height) { // teleport DOWN to UP
+                y = -50;
+            } 
+            if (x-50 > canvas.width) { // teleport RIGHT to LEFT
+                x = -50;
+            } 
+
+
+        switch(dir){
+
+            case "w":
+            //y -= 10;
+                dir = 1;
+                break;
+            case "s":
+                //y += 10;
+                dir = 2;
+                break;
+            case "a":
+                //x -= 10;
+                dir = 3;
+                break;
+            case "d":
+                //x += 10;
+                dir = 4;
+                break;
+        }
+        paint();
+        window.requestAnimationFrame(update);
+        }
+
+        // FUNCTIONS
+
+        function paint(){
+            ctx.fillStyle = "white";
+            ctx.fillRect(0, 0, 500, 500);
+
+            ctx.fillStyle = random_rgba();
+            ctx.fillRect(x, y, 50, 50);
+            ctx.strokeRect(x, y, 50, 50);
+
+            console.log("function paint");
+        }
+
+        update();
+
+        function play(){
+            console.log("function play");
+            requestAnimationFrame(paint);
+        }
+        play();
+
+        
+        // crear color
+        function random_rgba() {
+            let o = Math.round, r = Math.random, s = 255;
+            return 'rgba(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ',' + r().toFixed(1) + ')';
+        }
+
+
+    </script>
+</body>
+</html>
