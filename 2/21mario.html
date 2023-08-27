@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    canvas {
+        border: 1px solid black;
+        padding-left: 0;
+        padding-right: 0;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
+</style>
+<body>
+    <canvas id="myCanvas" width="800" height="600"></canvas>
+    
+    <script> //1290x720
+        const canvas = document.getElementById("myCanvas");
+        const ctx = canvas.getContext("2d");
+        
+        // block is 40 x 40 
+        // const blockWidth = 30;
+        // const blockHeight = 30;
+    
+        const cellSize = 40; // Grid cell size 
+
+        // WidthxHeight in canvas, 
+        // Row(height)xCol(width) in array
+        const mapHeight = 15; // Number of rows (15*40=600) 
+        const mapWidth = 20;  // Number of columns (20*40=800)
+
+        // Cell map 2D array (0-based indexing: Last cell is 19x14) 
+        const map = Array.from({ length: mapHeight }, () => Array(mapWidth).fill(false)); 
+    
+        // Colors
+        let colorSkyblock = "rgb(255, 144, 97)";
+        let colorSky = "rgb(179, 238, 254)";
+        let colorBush = "rgb(65, 129, 36)";
+        let colorBlockPeach = "rgb(255, 195, 184)";
+        let colorBlockBlue = "rgb(132, 192, 255)";
+        let colorBlockGreen = "rgb(81, 217, 107)";
+        let colorShadow = "rgb(0, 0, 0)";
+        let colorPipeLight = "rgb(179, 238, 254)";
+        let colorPipeBase = "rgb(25, 122, 16)";
+        let colorPipeMedium = "rgb(22, 108, 14)";
+        let colorPipeDark = "rgb(20, 95, 13)";
+        let colorGround = "rgb(238, 154, 101)";
+        let colorGroundBlock = "rgb(168, 114, 69)";
+        let colorGroundOutline = "rgb(94, 63, 37)";
+        let colorBlack = "rgb(0, 0, 0)";
+    
+        // Array list (you add blocks directly or by blocks.push([0, 0]);)
+        const blockSkyBackground = [];
+        const blockSky = [];
+        const blocksBush = [];
+        const blocksPeach = [];
+        const blocksBlue = [];
+        const blocksGreen = [];
+        const blocksShadow = [];
+        const blocksPipeTop = [];
+        const blocksPipeBase = [];
+        //const blocksPipeMedium = [];
+        //const blocksPipeDark = [];
+        const blocksGroundTop = [];
+        const blocksGroundBlock = [];
+        const blocksGroundBlockOutline = [];
+
+        // sky array
+        for (let col = 0; col <= 19; col++ ){
+            for (let row = 0; row <= 14; row++ ){
+                blockSkyBackground.push([row, col]);
+        }
+    }
+
+     // GroundBlock array
+     for (let col = 1; col <= 19; col++ ){
+            for (let row = 12; row <= 14; row++ ){
+                blocksGroundBlock.push([row, col]);
+        }
+    }
+
+    // blocksGroundBlockOutline array
+    for (let col = 1; col <= 19; col++ ){
+            for (let row = 12; row <= 14; row++ ){
+                blocksGroundBlockOutline.push([row, col]);
+        }
+    }
+
+    // blocksGroundTop array
+    for (let col = 1; col <= 19; col++ ){
+            for (let row = 11; row <= 11; row++ ){
+                blocksGroundTop.push([row, col]);
+        }
+    }
+
+    // blocksPeach array
+    for (let col = 5; col <= 8; col++ ){
+            for (let row = 7; row <= 10; row++ ){
+                blocksPeach.push([row, col]);
+        }
+    }
+
+        // blocksBlue array
+        for (let col = 7; col <= 10; col++ ){
+            for (let row = 4; row <= 10; row++ ){
+                blocksBlue.push([row, col]);
+        }
+    }
+
+        // blocksGreen array
+        for (let col = 17; col <= 19; col++ ){
+            for (let row = 7; row <= 10; row++ ){
+                blocksGreen.push([row, col]);
+        }
+    } 
+    
+        // blocksPipeBase array
+        for (let col = 12; col <= 14; col++ ){
+            for (let row = 7; row <= 10; row++ ){
+                blocksPipeBase.push([row, col]);
+        }
+    } 
+
+        // blocksPipeTop array
+        for (let col = 11; col <= 15; col++ ){
+            for (let row = 7; row <= 8; row++ ){
+                blocksPipeTop.push([row, col]);
+        }
+    } 
+
+    
+
+        blockSky.push(
+            [1, 3], [1, 4], [5, 1], [5, 17], 
+        );
+
+        //FUNCTIONS
+
+        // Draw blocks from array
+        function drawBlocksFromArray(array, color) {
+            ctx.fillStyle = color;
+            for (const block of array) {
+                const [row, col] = block;
+                map[row][col] = true; // Set the corresponding cell in the map to true
+                const x = col * cellSize;
+                const y = row * cellSize;
+                ctx.fillRect(x, y, cellSize, cellSize);
+            }
+            array.length = 0; // Reset array after drawing
+        }
+
+        // Draw outline from array
+        function drawOutlineFromArray(array, color, lineWidth) {
+            ctx.lineWidth = lineWidth;
+            ctx.strokeStyle = color;
+            for (const block of array) {
+                const [row, col] = block;
+                map[row][col] = true; // Set the corresponding cell in the map to true
+                const x = col * cellSize;
+                const y = row * cellSize;
+                ctx.strokeRect(x, y, cellSize, cellSize);
+            }
+            array.length = 0; // Reset array after drawing
+        }
+
+        // Draw line grid lines
+        function drawGrid() {
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = "rgba(0, 0, 0, 0.5)";
+        for (let row = 0; row < mapHeight; row++) {
+            for (let col = 0; col < mapWidth; col++) {
+                const x = col * cellSize;
+                const y = row * cellSize;
+                ctx.strokeRect(x, y, cellSize, cellSize);
+            }
+        }
+        }
+
+        // Draw bush
+        function drawBush() {
+            ctx.lineWidth = 7;
+            ctx.strokeStyle = "black";
+            ctx.fillStyle = colorBush;
+
+    const positions = [
+        [100, 410], [135, 410], [155, 410],
+        [100, 380], [135, 380], [155, 380],
+        [125, 360]
+    ];
+    
+    // Drawing w outline 
+    for (const [x, y] of positions) {
+    
+        ctx.beginPath();
+        ctx.arc(x, y, 30, 0, 2 * Math.PI);
+        ctx.stroke();
+        ctx.fill();
+        ctx.closePath();
+    }
+    // Redraw no outline
+    for (let i = 0; i < positions.length; i++) {
+        const x = positions[i][0];
+        const y = positions[i][1];
+
+        ctx.beginPath();
+        ctx.arc(x, y, 30, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.closePath();
+    }
+};
+
+        // Draw pillar blocks
+        function drawBlockPillar(array, color) {     
+            // Draw
+            const arrayTemp = array.slice(); // Create temp array for outline
+            drawOutlineFromArray(arrayTemp, colorBlack, 8); // Pillar block outline
+            drawBlocksFromArray(array, color); // Pillar block fill
+            arrayTemp.length = 0; // Reset array after drawing 
+
+            // Create
+
+        };
+
+        // draw sky blocks
+        function drawBlockSky() {};
+
+
+        //CALLING FUNCTIONS
+
+        // Call function to draw avatar
+        drawBlocksFromArray(blockSkyBackground, colorSky); // Skybackground
+        drawBlocksFromArray(blocksGroundBlock, colorGroundBlock); // Ground block
+        drawOutlineFromArray(blocksGroundBlockOutline, colorGroundOutline, 5); // Ground block outline
+        drawBlocksFromArray(blocksGroundTop, colorGround); // Ground block
+
+
+        //pillar test
+        //drawBlocksFromArray(blocksPeach, colorBlockPeach); // pillar block peach
+        //drawOutlineFromArray(testArray, colorGroundBlock, 5);
+
+        //drawBlocksFromArray(blocksBlue, colorBlockBlue); // pillar block peach
+        //drawOutlineFromArray(testArray, colorGroundBlock, 5);
+        
+        drawBlockPillar(blocksBlue, colorBlockBlue); // pillar block 
+        drawBlockPillar(blocksPeach, colorBlockPeach); // pillar block 
+        drawBlockPillar(blocksGreen, colorBlockGreen); // pillar block 
+        drawBlockPillar(blocksPipeBase, colorPipeDark); // pipe base
+        drawBlockPillar(blocksPipeTop, colorPipeDark); // pipe top
+        drawBlockPillar(blockSky, colorSkyblock);
+        
+        drawBush();
+        
+        
+        // Call function to draw grid
+        //drawGrid();
+
+    </script>
+    
+</body>
+</html>
