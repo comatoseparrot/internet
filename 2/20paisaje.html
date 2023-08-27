@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    canvas {
+        border: 1px solid black;
+        padding-left: 0;
+        padding-right: 0;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
+</style>
+<body>
+    <canvas id="myCanvas" width="1290" height="720"></canvas>
+    
+    <script>
+        const canvas = document.getElementById("myCanvas");
+        const ctx = canvas.getContext("2d");
+        
+        // block is 30 x 30 
+        const blockWidth = 30;
+        const blockHeight = 30;
+    
+        const cellSize = 30; // Grid cell size 
+
+        // WidthxHeight in canvas, 
+        // Row(height)xCol(width) in array
+        const mapHeight = 24; // Number of rows (24*30=720)
+        const mapWidth = 43;  // Number of columns (43*30=1290)
+
+        // Cell map 2D array (0-based indexing: Last cell is 23x42) 
+        const map = Array.from({ length: mapHeight }, () => Array(mapWidth).fill(false)); 
+    
+        // Colors
+        //new 
+        let colorSky = "rgb(135, 206, 235)";
+        let colorGrass = "rgb(82, 159, 50)";
+        let colorWall = "rgb(166, 142, 128)";
+        let colorRoof = "rgb(43, 21, 25)";
+        let colorStone = "rgb(98, 97, 98)";
+        let colorDoor = "rgb(117, 86, 43)";
+        let colorTree = "rgb(46, 16, 12)";
+        
+    
+        // Array list (you add blocks directly or by blocks.push([0, 0]);)
+        const blocksSky = [];
+        const blocksGrass = [];
+        const blocksWall = [];
+        const blocksRoof = [];
+        const blocksStone = [];
+        
+        ctx.fillStyle = colorGrass;
+        ctx.fillRect(0, 700, 1290, 20); // grass
+        ctx.fillStyle = colorStone;
+        ctx.fillRect(500, 450, 30, 250); // left pillar 500
+        ctx.fillRect(1000, 450, 30, 250); // right pillar 1030
+        ctx.fillStyle = colorWall;
+        ctx.fillRect(530, 450, 470, 250); // house base
+        ctx.fillStyle = colorRoof;
+        ctx.beginPath(); // roof triangle 1
+        ctx.moveTo(500, 450); // left
+        ctx.lineTo(1030, 450); // right
+        ctx.lineTo(750, 200); // top
+        ctx.closePath();
+        ctx.fill(); 
+        ctx.fillStyle = colorWall;
+        ctx.beginPath(); // wall triangle 2
+        ctx.moveTo(530, 450);
+        ctx.lineTo(1000, 450);
+        ctx.lineTo(750, 230);
+        ctx.closePath();
+        ctx.fill();
+        ctx.fillStyle = colorDoor;
+        ctx.fillRect(650, 530, 200, 170); // door left space: 500-650. right space:   1000-850
+        ctx.fillStyle = "rgb(24, 95, 141)";
+        //ctx.fillRect (600, 400, 50, 80);
+        ctx.beginPath(); //ctx.ellipse(640, 466, 60.5, 82.5, 0, 0, 2 * Math.PI);
+        ctx.fillRect(570, 440, 80, 80); // window left
+
+        ctx.lineWidth = 10; // bold line for window
+        ctx.strokeStyle = colorStone;
+        ctx.strokeRect(570, 440, 80, 80); // window left outline
+        ctx.fillRect(870, 440, 80, 80); // window right
+        ctx.strokeRect(870, 440, 80, 80); // window right outline
+        ctx.closePath();
+        ctx.fill();
+        ctx.fillStyle = colorGrass;
+        ctx.fillRect(140, 200, 280, 180); // tree leaves
+        ctx.fillStyle = colorTree;
+        ctx.fillRect(230, 380, 100, 320); // tree trunk
+       
+
+
+
+        // Draw line grid lines
+        function drawGrid() {
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = "rgba(0, 0, 0, 0.5)";
+        for (let row = 0; row < mapHeight; row++) {
+            for (let col = 0; col < mapWidth; col++) {
+                const x = col * cellSize;
+                const y = row * cellSize;
+                ctx.strokeRect(x, y, cellSize, cellSize);
+            }
+        }
+        }
+        ctx.strokeStyle = "rgba(0, 0, 0, 0.5)";
+        //drawGrid();
+
+    </script>
+    
+</body>
+</html>
