@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    canvas {
+        border: 1px solid black;
+        padding-left: 0;
+        padding-right: 0;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
+</style>
+<body>
+    <canvas id="myCanvas" width="800" height="600"></canvas>
+    
+    <script> //1290x720
+        const canvas = document.getElementById("myCanvas");
+        const ctx = canvas.getContext("2d");
+        
+        // block is 40 x 40 
+        // const blockWidth = 30;
+        // const blockHeight = 30;
+    
+        const cellSize = 40; // Grid cell size 
+
+        // WidthxHeight in canvas, 
+        // Row(height)xCol(width) in array
+        const mapHeight = 15; // Number of rows (15*40=600) 
+        const mapWidth = 20;  // Number of columns (20*40=800)
+
+        // Cell map 2D array (0-based indexing: Last cell is 19x14) 
+        const map = Array.from({ length: mapHeight }, () => Array(mapWidth).fill(false)); 
+    
+        // Colors
+        let colorSky = "rgb(32, 0, 160)";
+        let colorShadow = "rgb(0, 0, 0, 0.7)";
+        let colorGroundDark = "rgb(92, 32, 0)";
+        let colorGroundBright = "rgb(192, 96, 0)";
+        let colorGreenBright = "rgb(128, 224, 0)";
+        let colorGreenMedium = 'rgb(64, 160, 0)';
+        let colorGreenDark = 'rgb(0, 96, 0)';
+        let colorGoldRing = 'rgb(251, 250, 3)';
+        let colorTreeTrunk = 'rgb(128, 64, 0)';
+
+    
+        // Array list (you add blocks directly or by blocks.push([0, 0]);)
+        const blockSkyBackground = [];
+        const blockGroundDark = [];
+        const blockGroundBright = [];
+        const blockGroundTop = [];
+        const blockGroundBottom = [];
+        const blockTreeTrunk = []
+
+        // sky array
+        for (let col = 0; col <= 19; col++ ){
+        for (let row = 0; row <= 14; row++ ){
+            blockSkyBackground.push([row, col]);
+        }
+    }
+
+        // blockGroundBright array
+        for (let col = 0; col <= 19; col++ ){
+        for (let row = 12; row <= 14; row++ ){
+            blockGroundBright.push([row, col]);
+        }
+    }
+
+     // blockGroundDark array
+        for (let col = 0; col <= 19; col++) {
+        for (let row = 12; row <= 14; row++) {
+        if ((row === 12 || row === 14) && col % 2 === 0) {
+            blockGroundDark.push([row, col]); // for top and bottom - even
+        } else if (row === 13 && col % 2 === 1) {
+            blockGroundDark.push([row, col]); // for middle - odd
+            }
+        }
+    }
+
+        // blockGroundTop array
+        for (let col = 0; col <= 19; col++ ){
+        for (let row = 10; row <= 10; row++ ){
+            blockGroundTop.push([row, col]);
+        }
+    }
+
+        // blockGroundBottom array
+        for (let col = 0; col <= 19; col++ ){
+        for (let row = 11; row <= 11; row++ ){
+            blockGroundBottom.push([row, col]);
+        }
+    }
+
+        // blockTreeTrunk array
+        for (let col = 10; col <= 10; col++ ){
+        for (let row = 1; row <= 9; row++ ){
+            blockTreeTrunk.push([row, col]);
+        }
+    }
+
+
+        //FUNCTIONS
+
+        // Draw blocks from array
+        function drawBlocksFromArray(array, color) {
+            ctx.fillStyle = color;
+            for (const block of array) {
+                const [row, col] = block;
+                map[row][col] = true; // Set the corresponding cell in map to true
+                const x = col * cellSize;
+                const y = row * cellSize;
+                ctx.fillRect(x, y, cellSize, cellSize);
+            }
+            array.length = 0; // Reset array after drawing
+        }
+
+        // Draw outline from array
+        function drawOutlineFromArray(array, color, lineWidth) {
+            ctx.lineWidth = lineWidth;
+            ctx.strokeStyle = color;
+            for (const block of array) {
+                const [row, col] = block;
+                map[row][col] = true; // Set the corresponding cell in map to true
+                const x = col * cellSize;
+                const y = row * cellSize;
+                ctx.strokeRect(x, y, cellSize, cellSize);
+            }
+            array.length = 0; // Reset array after drawing
+        }
+
+        // Draw line grid lines
+        function drawGrid() {
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = "rgba(0, 0, 0, 0.5)";
+        for (let row = 0; row < mapHeight; row++) {
+            for (let col = 0; col < mapWidth; col++) {
+                const x = col * cellSize;
+                const y = row * cellSize;
+                ctx.strokeRect(x, y, cellSize, cellSize);
+            }
+        }
+        }
+
+
+        // Draw 
+        function drawPalm(){
+            drawBlocksFromArray(blockTreeTrunk, colorTreeTrunk);
+            ctx.lineWidth = 1; 
+            ctx.fillStyle = colorGreenBright; // Line color
+            ctx.beginPath();
+            //ctx.moveTo(-10, 50); 
+            //ctx.lineTo(100, 150); 
+            ctx.closePath();
+            ctx.stroke(); 
+
+            // leaves 1
+            const leafWidth = 90; 
+            const leafHeight = 20; 
+            ctx.beginPath();
+            ctx.ellipse(20, 110, leafWidth, leafHeight, 3.8, 0, 2*Math.PI);
+            //ctx.stroke();
+            ctx.fill();
+            ctx.closePath();
+
+            ctx.beginPath();
+            ctx.ellipse(20, 110, leafWidth, leafHeight, 4, 0, 2*Math.PI);
+           // ctx.stroke();
+            ctx.fill();
+            ctx.closePath();
+
+            ctx.beginPath();
+            ctx.ellipse(0, 110, leafWidth, leafHeight, 1.2, 0, 2*Math.PI);
+            //ctx.stroke();
+            ctx.fill();
+            ctx.closePath();
+
+              // leaves 2
+            // leaves right
+            ctx.beginPath();
+            ctx.ellipse(480, 110, leafWidth, leafHeight, 3.8, 0, 2*Math.PI);
+            //ctx.stroke();
+            ctx.fill();
+            ctx.closePath();
+
+            ctx.beginPath();
+            ctx.ellipse(480, 100, leafWidth, leafHeight, 4, 0, 2*Math.PI);
+           // ctx.stroke();
+            ctx.fill();
+            ctx.closePath();
+
+            ctx.beginPath();
+            ctx.ellipse(440, 110, leafWidth, leafHeight, 1.2, 0, 2*Math.PI);
+            //ctx.stroke();
+            ctx.fill();
+            ctx.closePath();
+
+            ctx.beginPath();
+            ctx.ellipse(460, 110, leafWidth, leafHeight, 7.2, 0, 2*Math.PI);
+            //ctx.stroke();
+            ctx.fill();
+            ctx.closePath();
+
+            // leaves left
+            ctx.beginPath();
+            ctx.ellipse(355, 95, leafWidth, leafHeight, -3.9, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.closePath();
+
+            ctx.beginPath();
+            ctx.ellipse(355, 100, leafWidth, leafHeight, -4.0, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.closePath();
+
+            ctx.beginPath();
+            ctx.ellipse(370, 110, leafWidth, leafHeight, -1.1, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.closePath();
+
+            ctx.beginPath();
+            ctx.ellipse(360, 110, leafWidth, leafHeight, -7.2, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.closePath();
+        } 
+            
+        function drawRings() {
+        ctx.strokeStyle = colorGoldRing;
+        ctx.lineWidth = 4;
+        const tempArray = [
+            [8, 2], [8, 4], [8, 6]
+        ];
+
+        for (let i = 0; i < tempArray.length; i++) {
+        const [row, col] = tempArray[i];
+        const x = col * cellSize + cellSize / 2;
+        const y = row * cellSize + cellSize / 2;
+        const radius = cellSize / 2-3;
+
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, 2 * Math.PI);
+        ctx.stroke();
+        ctx.closePath();
+        }
+
+        tempArray.lenght = 0;
+    }
+        
+    function drawFlower(){
+        
+        
+        // stem
+        ctx.fillStyle = colorGreenMedium;
+        ctx.fillRect(645, 300, 30, 110);
+
+        // outer circle
+        ctx.fillStyle = "rgb(224, 224, 28)";
+        ctx.beginPath();
+        //ctx.arc(660, 270, 70, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.closePath();
+
+        // leaves
+        ctx.beginPath();
+        ctx.arc(635, 255, 40, 0, 2 * Math.PI); // top left
+        ctx.fill();
+        ctx.closePath();
+
+        ctx.beginPath();
+        ctx.arc(640, 290, 40, 0, 2 * Math.PI); // bottom left
+        ctx.fill();
+        ctx.closePath();
+
+        ctx.beginPath();
+        ctx.arc(680, 290, 40, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.closePath();
+
+        ctx.beginPath();
+        ctx.arc(685, 255, 40, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.closePath();
+
+        // inner circle
+        ctx.fillStyle = colorGreenDark;
+        ctx.beginPath();
+        ctx.arc(660, 270, 35, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.closePath();
+
+    }
+
+            
+
+        //CALLING FUNCTIONS
+        drawBlocksFromArray(blockSkyBackground, colorSky); // Sky background
+        drawBlocksFromArray(blockGroundBright, colorGroundBright); // Ground bright
+        drawBlocksFromArray(blockGroundDark, colorGroundDark); // Ground dark
+        drawBlocksFromArray(blockGroundTop, colorGreenMedium); // Ground top
+        drawBlocksFromArray(blockGroundBottom, colorGreenDark); // Ground bottom
+        
+        // palm tree
+        drawPalm();
+
+        // Draw shadow
+        ctx.fillStyle = colorShadow;
+        ctx.fillRect(0, 480, 800, 25);
+
+        // Rings
+        drawRings();
+
+        //  
+        drawFlower();
+
+        // Call function to draw grid
+        //drawGrid();
+
+    </script>
+    
+</body>
+</html>
