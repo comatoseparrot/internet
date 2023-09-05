@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        canvas {
+            background-color: white;
+            border: 1px solid black;
+            padding-left: 0;
+            padding-right: 0;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+        }
+        body {
+            background-color: black;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="myCanvas"></canvas>
+
+    <script>
+        var canvas = document.getElementById('myCanvas');
+        var ctx = canvas.getContext('2d');
+
+        // Set canvas size
+        canvas.width = 500;
+        canvas.height = 500;
+
+        // Variables
+        var initialX = 225, initialY = 225, dir = 0, speed = 5, moves = 0;
+        let randomY = randomIntFromInterval(50, (canvas.height-50));
+        let randomX = randomIntFromInterval(50, (canvas.width-50));
+        let score = 0;
+        let pauseStatus = false;
+        let lastHurtSince = 0;
+        let musicStatus = true;
+        const homer = new Image();
+        const donut = new Image();
+        const hurt = new Audio("./sound/hurt.mp3");
+        const eating = new Audio("./sound/eating.mp3");
+        const music = new Audio("./sound/music.mp3");
+        const celebrate = new Audio ("./sound/celebrate.mp3");
+
+        music.loop = true; 
+        music.volume = 0.3; // 30%
+        hurt.volume = 0.5;
+        eating.volume = 0.7;
+        celebrate.volume = 0.4;
+        music.play();
+
+        homer.src = "./image/homer.png";
+        donut.src = "./image/donut.png";
+
+        // CLASSES
+
+        class ObjectControlledClass {
+            constructor(x, y, color, size) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                this.size = size;
+            }
+
+            draw() {
+                ctx.fillStyle = random_rgba();
+                ctx.fillRect(this.x, this.y, this.size, this.size);
+                ctx.strokeStyle = "black"; 
+                ctx.strokeRect(this.x, this.y, this.size, this.size);
+            }
+
+            checkOutofBounds(){
+
+                if (dir == 1) { // FROM BOTTOM TO TOP
+                this.y -= speed;
+                moves++;
+                if (this.y + this.size < 0) {
+                    this.y = canvas.height + this.size; //550
+                }
+                }
+                if (dir == 2) { // FROM TOP TO BOTTOM
+                    this.y += speed;
+                    if (this.y + this.size > canvas.height) { //>500
+                        this.y = -this.size;
+                    }
+                }
+                if (dir == 3) { // FROM RIGHT TO LEFT
+                    this.x += speed;
+                    moves++;
+                    if (this.x + this.size > canvas.width) { //>500
+                        this.x = -this.size;
+                    }
+                }
+                if (dir == 4) { // FROM LEFT TO RIGHT
+                    this.x -= speed;
+                    moves++;
+                    if (this.x + this.size < 0) {
+                        this.x = canvas.width + this.size; //550
+                    }
+                }
+                }
+
+        }
+
+        class ObjectObjectiveClass {
+            constructor(x, y, color, size) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                this.size = size;
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.fillRect(this.x, this.y, this.size, this.size);
+                ctx.strokeStyle = "black"; 
+                ctx.strokeRect(this.x, this.y, this.size, this.size);
+            }
+
+            // Check objective collision
+            checkCollision(otherObject) {
+                if(
+                    otherObject.x < this.x + 20 &&
+                    otherObject.x + 50 > this.x &&
+                    otherObject.y < this.y + 20 &&
+                    otherObject.y + 50 > this.y) {
+                console.log("Objective collision!")
+
+                // Trying to make obj appear inside bounds only
+                this.x = randomIntFromInterval(this.size, (canvas.width-this.size));
+                this.y = randomIntFromInterval(this.size, (canvas.height-this.size));
+                
+                if (moves>0){
+                score+=10;
+                
+                eating.pause();
+                eating.currentTime = 0; // Rewind sound to trigger consecutive donut eating
+                eating.play();
+
+                if (score %100 === 0){
+                    celebrate.play();
+                }
+                
+                    }
+                }
+            }
+
+        }
+
+        class ObjectObstacleClass {
+            constructor(x, y, color, width, height) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                this.width = width;
+                this.height = height;
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.fillRect(this.x, this.y, this.width, this.height);
+                ctx.strokeStyle = "black"; 
+                ctx.strokeRect(this.x, this.y, this.width, this.height);
+            }
+
+            // Check obstacle collision 
+            checkCollision(otherObject) {
+                if (
+                    otherObject.x < this.x + 250 && 
+                    otherObject.x + 50 > this.x && 
+                    otherObject.y < this.y + 20 && 
+                    otherObject.y + 50 > this.y) {
+
+                console.log("Obstacle collision!")
+
+                const currentTime = Date.now();
+
+                // Limit hurts at 1 hurt per X seonds
+                if (currentTime - lastHurtSince >= 1000) {
+                    hurt.play();
+                    lastHurtSince = currentTime; // x Time since incidents
+                }
+
+                /*if (hurt.paused) {
+                hurt.play();
+                }*/
+
+                if (dir == 1) {
+                    otherObject.y += speed;
+                }
+                if (dir == 2) {
+                    otherObject.y -= speed;
+                }
+                if (dir == 3) {
+                    otherObject.x -= speed;
+                }
+                if (dir == 4) {
+                    otherObject.x += speed;
+                }
+            }
+            }
+
+            }
+
+        // Obstacle array
+        const obstacles = [];
+
+        // Creating objects
+        const objectControlled = new ObjectControlledClass(initialX, initialY, null, 50);
+        const objectObjective = new ObjectObjectiveClass(randomX, randomY, "red", 50);
+        const objectObstacle1 = new ObjectObstacleClass(120, 320, "blue", 250, 20);
+        const objectObstacle2 = new ObjectObstacleClass(120, 120, "blue", 250, 20);
+    
+        // Populate array
+        obstacles.push(objectObstacle1, objectObstacle2);
+    
+        // RequestAnimationFrame
+        window.requestAnimationFrame = (function () {
+            return window.requestAnimationFrame ||
+                window.webkitRequestAnimationFrame ||
+                window.mozRequestAnimationFrame ||
+                function (callback) {
+                    window.setTimeout(callback, 17);
+                };
+        }());
+
+        // Event listener for direction
+        document.addEventListener("keydown", (e) => {
+
+            switch (e.keyCode) {
+                case 87:
+                    dir = 1;
+                    break;
+                case 83:
+                    dir = 2;
+                    break;
+                case 68:
+                    dir = 3;
+                    break;
+                case 65:
+                    dir = 4;
+                    break;
+                case 16:  // SHIFT FOR SPEED
+                if (!e.repeat && !pauseStatus) {
+                    speed += 5;
+                }
+                    break;
+            }
+
+        })
+
+         // Event listener for pause
+            document.body.onkeyup = function(e) {
+            if (e.key == " " ||
+                e.code == "Space" ||      
+                e.keyCode == 32      
+            ) {
+            // Triggers on space " " key
+            // On pause: add gray layer, reduce speed to 0
+            // On unpause: remove gray layer, restore speed to 10
+            if (!pauseStatus){
+            console.log("PAUSE!");
+            speed = 0;
+            pauseStatus = true;
+            //console.log(speed);
+            } else {
+            console.log("UNPAUSE!");
+            // Remove gray layer
+            speed = 5;
+            pauseStatus = false;
+            //console.log(speed);
+            }
+            }
+        }
+
+        // eVENT LISTENER FOR PAUSING MUSIC
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "m") {
+                if(musicStatus){
+                music.pause(); // Pause music on M
+                musicStatus = false;
+                } else {
+                    music.play();
+                    musicStatus = true;
+                }
+            }
+        })
+
+        function update() {
+            
+            // Teleport when outside canvas
+            objectControlled.checkOutofBounds();
+
+            // Objective collision
+           objectObjective.checkCollision(objectControlled);
+            for (const obstacle of obstacles) {
+                objectObjective.checkCollision(obstacle);
+            }
+
+            // Obstacle collision
+            for (const obstacle of obstacles) {
+                obstacle.checkCollision(objectControlled);
+            }
+
+            
+            paint();
+            window.requestAnimationFrame(update);
+        }
+
+        // ONLY-paint function
+        function paint() {
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw controlled object
+            //objectControlled.draw();
+            ctx.drawImage(homer, objectControlled.x, objectControlled.y, 50, 50);
+
+            // Draw objective object
+            //objectObjective.draw();
+            ctx.drawImage(donut, objectObjective.x, objectObjective.y, 50, 50);
+
+            // Draw obstacle object
+            for (const obstacle of obstacles) {
+                obstacle.draw();
+            }
+
+            // Draw score
+            ctx.font = "40px Arial";
+            ctx.fillStyle = "red"; 
+            ctx.fillText(`Score: ${score}`, 10, 50);
+
+            // Draw pause elements
+            if (pauseStatus){
+            ctx.fillStyle = "rgba(128, 128, 128, 0.4)";  // Transparent gray layer
+            ctx.fillRect(0, 0, canvas.width, canvas.height); // Add gray layer
+
+            ctx.font = "40px Arial";
+            ctx.fillStyle = "BLACK"; 
+            ctx.fillText(`PAUSE`, 200, 240);
+        }
+
+        }
+
+        update();
+
+
+        // Random RGB color
+        function randomRgbColor() {
+            let r = randomInteger(255);
+            let g = randomInteger(255);
+            let b = randomInteger(255);
+            return "rgba(" + r + "," + g + "," + b + ",0.5)";
+        }
+
+        // Random RGBA color
+        function random_rgba() {
+            let o = Math.round, r = Math.random, s = 255;
+            return 'rgba(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ',' + r().toFixed(1) + ')';
+        }
+
+        // Random integer
+        function randomInteger(max) {
+            return Math.floor(Math.random() * (max + 1));
+        }
+
+        // Random integer (location) from interval
+        function randomIntFromInterval(min, max) { // Min and max included 
+            return Math.floor(Math.random() * (max - min + 1) + min)
+        }
+
+
+
+    </script>
+</body>
+</html>
