@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: gray;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <p>{{message}}</p>
+        <h2> Hello {{ username1 + ' ' + username2 }}</h2>
+        <br>
+        <fieldset>
+        <legend> <b>Personal data</b></legend>
+        <input type="text" v-model="username1" placeholder="Enter user">
+        <input type="text" v-model="username2" placeholder="Enter user">
+        <br>
+        </fieldset>
+        <br>
+        <fieldset>
+        <legend> <b>Addition</b></legend>
+        <input type="number" v-model="num1" placeholder="Enter num1">
+        <br>
+        <input type="number" v-model="num2" placeholder="Enter num2">
+        <br>
+        <h3> Total =  {{ num1+num2 }}</h3>
+    </div>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        const { createApp, ref } = Vue;
+
+        createApp({
+            setup() {
+                const message = ref('Hello vue!');
+                const username1 = ref('');
+                const username2 = ref('');
+                const num1 = ref('');
+                const num2 = ref('');
+
+                return {
+                    message,
+                    username1,
+                    username2,
+                    num1,
+                    num2
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>
