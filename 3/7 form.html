@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <hr>
+    <br>
+    <div id="app">
+    <form>
+    <fieldset>
+        <legend>Name</legend>
+        <input type="text" v-model="name" placeholder="Enter name">
+    </fieldset>
+    <fieldset>
+        <legend>Last name</legend>
+        <input type="text" v-model="lastname" placeholder="Enter last name">
+    </fieldset>  
+    <br>
+    <button type="button" v-on:click="saveData">Save Data</button> 
+    </form>
+    <br>
+    <p><b>List of people</b></p>
+    <ol>
+        <li v-for="(item, index) in persons" v-bind:key="index">{{ item.name }} {{ item.lastname }}</li>
+    </ol>
+    </div>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        const { createApp, ref } = Vue;
+
+        createApp({
+            setup() {
+                const name = ref('');
+                const lastname = ref('');
+                const persons = ref([])
+
+                const saveData = () => {
+                    console.log("function working")
+                    
+                    // create object
+                    let person = {
+                        name: name.value,
+                        lastname: lastname.value
+                    };
+                    
+                    // push obj to array
+                    persons.value.push(person);
+
+                        // clean form
+                        name.value = '';
+                    lastname.value = '';
+                }
+
+                return {
+                    name,
+                    lastname,
+                    persons,
+                    saveData
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>
