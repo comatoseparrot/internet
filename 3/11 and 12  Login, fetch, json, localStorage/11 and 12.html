@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <hr>
+    <br>
+    <div class="container" id="app">
+    <form v-if="!isLoginActive">
+    <fieldset>
+        <legend><b>Email</b></legend>
+        <input type="email" v-model="email" placeholder="Enter email">
+    </fieldset>
+    <fieldset>
+        <legend><b>Password</b></legend>
+        <input type="password" v-model="password" placeholder="Enter password">
+    </fieldset>  
+    <br>
+    <button type="button" v-on:click="login">Access</button> 
+    <!-- <button type="button" v-on:click="showMessage">Show Message</button>-->
+    </form>
+    <div v-else>
+        <p>You are already logged in.</p>
+    </div>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script> 
+
+    <script> 
+        const { createApp, ref } = Vue;
+
+        createApp({
+            setup() {
+                
+
+                // Variables
+                const message = ref('Hello vue!'); // debugging
+                const email = ref('');
+                const password = ref('');
+                let isLoginActive = ref(false); 
+
+                
+                // Functions
+                const login = async () => {
+                    console.log("login function working");  
+                    let isUserFound = false;          
+                    
+                    try {
+                        const response = await fetch("users.json"); 
+                        const users = await response.json();
+                        console.log("List of users: ");
+                        console.log(users);
+                        //console.log("for: ")
+                        users.forEach(user => {
+
+                            // debugging
+                            //console.log("Email input:", email.value);
+                            //console.log("Password input:", password.value);
+                            //console.log("User email:", user.email);
+                            //console.log("User password:", user.password);
+
+                            //console.log(user);    
+                            if (email.value == user.email) {
+                                    alert('Access granted. Welcome ' + user.username);
+                                    //return true;
+                                    isLoginActive.value = true;
+                                    console.log("isLoginActive: " +isLoginActive.value);
+                                    isUserFound = true;  
+                                    // debugging localStorage.clear();
+                                    localStorage.setItem("user:data", JSON.stringify(user)); 
+                            }
+                        });
+                        if (!isUserFound){
+                            alert('User not found');
+                            console.log("isLoginActive: " +isLoginActive.value);
+                        }
+
+                    } catch (error) {
+                        console.error("Error fetching data:", error);
+                    }
+                }
+
+                // debugging
+                const showMessage = () => {
+                    console.log(message.value);
+                };
+
+                return {
+                    email,
+                    password,
+                    login,
+                    message,
+                    showMessage,
+                    isLoginActive
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>
