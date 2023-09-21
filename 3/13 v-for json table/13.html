@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+		.demTable {
+			border:1px solid #b3adad;
+			border-collapse:collapse;
+			padding:5px;
+		}
+		.demTable th {
+			border:1px solid #b3adad;
+			padding:5px;
+			background: #b8b0f2;
+			color: #313030;
+		}
+		.demTable td {
+			border:1px solid #b3adad;
+			text-align:center;
+			padding:5px;
+			background: #eae8f7;
+			color: #313030;
+		}
+	</style>
+</head>
+<body>
+    <hr>
+    <br>
+    <div class="container" id="app">
+    <form v-if="!isLoginActive">
+    <fieldset>
+        <legend><b>Username or Email</b></legend>
+        <input type="email" v-model="email" placeholder="Enter email">
+    </fieldset>
+    <fieldset>
+        <legend><b>Password</b></legend>
+        <input type="password" v-model="password" placeholder="Enter password">
+    </fieldset>  
+    <br>
+    <button type="button" v-on:click="login">Access</button> 
+    <!-- <button type="button" v-on:click="showMessage">Show Message</button>-->
+    </form>
+    <div v-else>
+        <p>You are already logged in.</p>
+        <button type="button" v-on:click="logoff">Goodbye</button> 
+    <table class="demTable">
+        <caption>List of users</caption>
+        <thead>
+            <tr>
+            <th>Id</th>
+            <th>Username</th>
+            <th>Name</th>
+            <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="(item, index) in users" :key="index">
+            <td>{{ item.id }}</td>
+            <td>{{ item.username}}</td>
+            <td>{{ item.name }} {{ item['last name'] }}</td>
+            <td>{{ item.email }}</td>
+            </tr>
+        </tbody>
+        </table>          
+    </div>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script> 
+
+    <script> 
+        const { createApp, ref, onMounted } = Vue;
+
+        createApp({
+            setup() {
+                
+
+                // Variables
+                const message = ref('Button test!'); // debugging
+                const email = ref('');
+                const password = ref('');
+                let isLoginActive = ref(localStorage.getItem("user:data") ? true : false); 
+
+                
+                // Functions
+                const login = async () => {
+                    console.log("login function working");  
+                    let isUserFound = false;          
+                    
+                    try {
+                        const response = await fetch("users.json"); 
+                        const usersData = await response.json();
+                        console.log("List of users: ");
+                        console.log(usersData);
+                        //console.log("for: ")
+
+                        users.value = usersData; // Replace refresh: Update users ref with fetched data
+
+                        usersData.forEach(user => {
+
+                            // debugging
+                            //console.log("Email input:", email.value);
+                            //console.log("Password input:", password.value);
+                            //console.log("User email:", user.email);
+                            //console.log("User password:", user.password);
+
+                            //console.log(user);    
+                            if (email.value == user.email || email.value == user.username) {
+                                    alert('Access granted. Welcome ' + user.username);
+                                    //return true;
+                                    //isLoginActive.value = true;
+                                    //console.log("isLoginActive: " +isLoginActive.value);
+                                    isUserFound = true;  
+                                    // debugging localStorage.clear();
+                                    localStorage.setItem("user:data", JSON.stringify(user));
+                                    isLoginActive.value = true;
+                                    //location.reload(); //To show table data
+                            }
+                        });
+                        if (!isUserFound){
+                            alert('User not found');
+                            //console.log("isLoginActive: " +isLoginActive.value);
+                        }
+
+                    } catch (error) {
+                        console.error("Error fetching data:", error);
+                    }
+                }
+
+                // debugging
+                const showMessage = () => {
+                    console.log(message.value);
+                };
+
+                // Users
+                const users = ref([]);
+
+                // Update users
+                const updateUsers = async () => {
+                try {
+                    const response = await fetch("users.json");
+                    users.value = await response.json();
+                } catch (error) {
+                    console.error("Error fetching data:", error);
+                }
+                };
+
+                // Call updateUsers when component is mounted
+                onMounted(() => {
+                if (isLoginActive.value) {
+                    updateUsers();
+                }
+                });
+
+                // logoff
+                function logoff() {
+                    localStorage.clear();
+                    isLoginActive.value = false; 
+                }
+
+                return {
+                    email,
+                    password,
+                    login,
+                    message,
+                    showMessage,
+                    isLoginActive,
+                    users,
+                    logoff
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>
