@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+		.demTable {
+			border:1px solid #b3adad;
+			border-collapse:collapse;
+			padding:5px;
+		}
+		.demTable th {
+			border:1px solid #b3adad;
+			padding:5px;
+			background: #b8b0f2;
+			color: #313030;
+		}
+		.demTable td {
+			border:1px solid #b3adad;
+			text-align:center;
+			padding:5px;
+			background: #eae8f7;
+			color: #313030;
+		}
+	</style>
+</head>
+<body>
+    <hr>
+    <br>
+    <div class="container" id="app">
+    <form v-if="!isLoginActive">
+    <fieldset>
+        <legend><b>Username or Email</b></legend>
+        <input type="email" v-model="email" placeholder="Enter email">
+    </fieldset>
+    <fieldset>
+        <legend><b>Password</b></legend>
+        <input type="password" v-model="password" placeholder="Enter password">
+    </fieldset>  
+    <br>
+    <button type="button" v-on:click="login">Access</button> 
+    </form>
+    <div v-else>
+        <p>You are already logged in.</p>
+        <button type="button" v-on:click="logoff">Goodbye</button> 
+        <button type="button" v-on:click="toggleTable">Toggle Table</button> 
+        <table class="demTable" v-if="isTableOn">
+        <caption>List of users</caption>
+        <thead>
+            <tr>
+            <th>Id</th>
+            <th>Username</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="(item, index) in users" :key="index">
+            <td>{{ item.id }}</td>
+            <td>{{ item.username}}</td>
+            <td>{{ item.name }} {{ item['last name'] }}</td>
+            <td>{{ item.email }}</td>
+            <td>
+                <button v-on:click="edit_item_test(item.id)">Edit</button> 
+                <button v-on:click="delete_item(item.id)">Delete</button>
+            </td>
+            </tr>
+        </tbody>
+        </table>  
+        <br>
+        <button v-on:click="test()">
+            Add new record
+        </button>   
+        <form v-if="isNewRecord==true || isEditRecord==true" style="margin: 30px 0px 40px 0px;">
+            <fieldset>
+                <legend>
+                    Username
+                </legend>
+            <input type="text" name="" v-model="new_record.username">
+            </fieldset>
+
+            <fieldset>
+                <legend>
+                    Name
+                </legend>
+            <input type="text" name="" v-model="new_record.name">
+            </fieldset>
+
+            <fieldset>
+                <legend>
+                    Last Name
+                </legend>
+            <input type="text" name="" v-model="new_record.lastname">
+            </fieldset>
+
+            <fieldset>
+                <legend>
+                    Email
+                </legend>
+            <input type="text" name="" v-model="new_record.email">
+            </fieldset>
+            <br>
+
+            <button type="button" v-on:click="save_test()">
+                Save record
+            </button>
+        </form>    
+    </div>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script> 
+
+    <script> 
+        const { createApp, ref, onMounted } = Vue;
+
+        createApp({
+            setup() {
+                
+                // Variables
+                const email = ref('');
+                const password = ref('');
+                let isLoginActive = ref(localStorage.getItem("user:data") ? true : false); 
+                let new_record = ref({
+                    username: '',
+                    name: '',
+                    lastname: '',
+                    email: ''
+                });
+                let isNewRecord = ref(false);
+                let isEditRecord = ref(false);
+                let isTableOn = ref(true);
+
+                
+                // Functions
+                const login = async () => {
+                    console.log("login function working");  
+                    let isUserFound = false;          
+                    
+                    try {
+                        const response = await fetch("users.json"); 
+                        const usersData = await response.json();
+                        console.log("List of users: ");
+                        console.log(usersData);
+
+                        users.value = usersData; // Replace refresh: Update users ref with fetched data
+
+                        usersData.forEach(user => {
+                            if (email.value == user.email || email.value == user.username) {
+                                    alert('Access granted. Welcome ' + user.username);
+                                    isUserFound = true;  
+                                    localStorage.setItem("user:data", JSON.stringify(user));
+                                    isLoginActive.value = true;
+                            }
+                        });
+                        if (!isUserFound){
+                            alert('User not found');
+                        }
+                    } catch (error) {
+                        console.error("Error fetching data:", error);
+                    }
+                }
+
+                // Users
+                const users = ref([]);
+
+                // Update users
+                const updateUsers = async () => {
+                try {
+                    const response = await fetch("users.json");
+                    users.value = await response.json();
+                } catch (error) {
+                    console.error("Error fetching data:", error);
+                }
+                };
+
+                // Mount component
+                onMounted(() => {
+                if (isLoginActive.value) {
+                    updateUsers(); // Call updateUsers when component is mounted
+                }
+                });
+
+                // logoff
+                function logoff() {
+                    localStorage.clear();
+                    isLoginActive.value = false; 
+                }
+
+                // test
+                function test() {
+                    isNewRecord.value = !isNewRecord.value;
+                    console.log('btn clicked');
+                    console.log(`isNewRecord value is ${isNewRecord.value}`)
+                }
+
+                // save
+                function save_test() {
+                console.log("save function");
+                console.log(new_record.value);
+
+                const nameFull = new_record.value.name + (new_record.value.lastname ? ' ' + new_record.value.lastname : '');
+
+                const newUser = {
+                    username: new_record.value.username,
+                    name: nameFull,
+                    email: new_record.value.email,
+                    id: new_record.value.id            
+                };
+
+                if (isNewRecord.value) {
+                    // Create new user
+                    const lastUserId = users.value.length > 0 ? users.value[users.value.length - 1].id : 0;
+                    newUser.id = lastUserId + 1;
+                    users.value.push(newUser);
+                } else {
+                    // Updt existing user
+                    const index = users.value.findIndex(user => user.id === new_record.value.id);
+                    if (index !== -1) {
+                        users.value[index] = newUser;
+                    } else {
+                        console.error("Something went wrong: User not found.");
+                    }
+                }
+
+                // Clear fields
+                new_record.value = {
+                    username: '',
+                    name: '',
+                    lastname: '',
+                    email: ''
+                };
+                //isNewRecord.value = true;
+            }
+
+                function toggleTable() {
+                    isTableOn.value = !isTableOn.value;
+                    console.log(isTableOn.value);
+                    
+                }
+
+                function delete_item(id){
+                    console.log(id);
+                    const deleteConfirmed = window.confirm("Are you sure?");
+
+                    if(deleteConfirmed){
+                    users.value.forEach( (user, i) =>{
+                        if(user.id == id){
+                            target = i;
+                        }
+                    })
+                    users.value.splice(target, 1);
+                    }
+                }                
+
+                function edit_item_test(id){
+                console.log("Edit function");
+                isEditRecord.value=true;
+                isNewRecord.value=false;
+
+                // Find user id
+                const user = users.value.find(user => user.id === id);
+
+                if (user) {
+                    // Updt new_record.value with user current info
+                    new_record.value.username = user.username;
+                    new_record.value.name = user.name;
+                    new_record.value.lastname = user['last name'];
+                    new_record.value.email = user.email;
+                    new_record.value.id = user.id;
+                } else {
+                    console.error("Something went wrong: User not found.");
+                }
+            }
+
+                return {
+                    email,
+                    password,
+                    login,
+                    isLoginActive,
+                    isNewRecord,
+                    isEditRecord,
+                    isTableOn,
+                    users,
+                    logoff,
+                    new_record,
+                    test,
+                    save_test,
+                    toggleTable,
+                    delete_item,
+                    edit_item_test
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>
