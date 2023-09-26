@@ -1,0 +1,356 @@
+[
+{
+    "id": "1",
+    "username": "johnsmith",
+    "password": "password123",
+    "email": "johnsmith@hotmail.com",
+    "name": "John",
+    "last name": "Smith",
+    "age": "25",
+    "Phone number": "123456789",
+    "Account type": "user",
+    "Account status": true,
+    "security questions and answers": {
+        "Question1": "What is your mother's maiden name?", 
+        "Answer1": "Woods"
+    }
+},
+{
+    "id": "2",
+    "username": "janesmith",
+    "password": "pass987",
+    "email": "janesmith@gmail.com",
+    "name": "Jane",
+    "last name": "Smith",
+    "age": "30",
+    "Phone number": "987654321",
+    "Account type": "user",
+    "Account status": true,
+    "security questions and answers": {
+        "Question1": "What is your favorite color?", 
+        "Answer1": "Blue"
+        }
+},
+{
+    "id": "3",
+    "username": "admin123",
+    "password": "adminpass",
+    "email": "admin33@gmail.com",
+    "name": "Carl",
+    "last name": "Woods",
+    "age": "40",
+    "Phone number": "555555555",
+    "Account type": "administrator",
+    "Account status": true,
+    "security questions and answers": {
+        "Question1": "What is your pete's name?", 
+        "Answer1": "Rex"
+        }
+},
+{
+    "id": 4,
+    "username": "john.doe",
+    "password": "securePass123",
+    "email": "john.doe@gmail.com",
+    "name": "John",
+    "last name": "Doe",
+    "age": 28,
+    "phone number": "+1234567894",
+    "account type": "user",
+    "account status": true,
+    "security questions and answers": {
+    "question1": "What is your favorite book?",
+    "answer1": "To Kill a Mockingbird",
+    "question2": "Where were you born?",
+    "answer2": "New York"
+    }
+},
+{
+    "id": 5,
+    "username": "jane.smith",
+    "password": "strongPass987",
+    "email": "jane.smith@hotmail.com",
+    "name": "Jane",
+    "last name": "Smith",
+    "age": 35,
+    "phone number": "+9876543215",
+    "account type": "user",
+    "account status": true,
+    "security questions and answers": {
+    "question1": "What is your favorite movie?",
+    "answer1": "The Shawshank Redemption",
+    "question2": "Who is your childhood best friend?",
+    "answer2": "Sarah"
+    }
+},
+{
+    "id": 6,
+    "username": "pizzalover42",
+    "password": "yumPizza6",
+    "email": "pizza_lover42@outlook.com",
+    "name": "David",
+    "last name": "Johnson",
+    "age": 42,
+    "phone number": "+5555555556",
+    "account type": "user",
+    "account status": false,
+    "security questions and answers": {
+    "question1": "What is your favorite food?",
+    "answer1": "Pizza",
+    "question2": "What is your father's middle name?",
+    "answer2": "James"
+    }
+},
+{
+    "id": 7,
+    "username": "photo_enthusiast",
+    "password": "snapAway29",
+    "email": "photo.enthusiast@gmail.com",
+    "name": "Alice",
+    "last name": "Brown",
+    "age": 29,
+    "phone number": "+1234567897",
+    "account type": "user",
+    "account status": true,
+    "security questions and answers": {
+    "question1": "What is your favorite hobby?",
+    "answer1": "Photography",
+    "question2": "Who is your favorite author?",
+    "answer2": "J.K. Rowling"
+    }
+},
+{
+    "id": 8,
+    "username": "travel_bug",
+    "password": "wanderlust37",
+    "email": "travel.bug@hotmail.com",
+    "name": "Sarah",
+    "last name": "Johnson",
+    "age": 37,
+    "phone number": "+9876543218",
+    "account type": "user",
+    "account status": true,
+    "security questions and answers": {
+    "question1": "What is your dream vacation destination?",
+    "answer1": "Maldives",
+    "question2": "What is your favorite sports team?",
+    "answer2": "Manchester United"
+    }
+},
+{
+    "id": 9,
+    "username": "dolphinlover",
+    "password": "oceanLife31",
+    "email": "dolphin_lover@outlook.com",
+    "name": "Emily",
+    "last name": "Johnson",
+    "age": 31,
+    "phone number": "+5555555559",
+    "account type": "user",
+    "account status": true,
+    "security questions and answers": {
+    "question1": "What is your favorite animal?",
+    "answer1": "Dolphin",
+    "question2": "What is your mother's maiden name?",
+    "answer2": "Anderson"
+    }
+},
+{
+    "id": 10,
+    "username": "admin_uk",
+    "password": "admin12345",
+    "email": "admin.uk@gmail.com",
+    "name": "Admin",
+    "last name": "Smith",
+    "age": 45,
+    "phone number": "+12345678910",
+    "account type": "administrator",
+    "account status": true,
+    "security questions and answers": {
+    "question1": "What is your favorite color?",
+    "answer1": "Blue",
+    "question2": "Who is your childhood hero?",
+    "answer2": "Albert Einstein"
+    }
+},
+{
+    "id": 11,
+    "username": "admin_einstein",
+    "password": "adminPass11",
+    "email": "admin.einstein@outlook.com",
+    "name": "Admin",
+    "last name": "Einstein",
+    "age": 50,
+    "phone number": "+98765432111",
+    "account type": "administrator",
+    "account status": true,
+    "security questions and answers": {
+    "question1": "What is your favorite season?",
+    "answer1": "Spring",
+    "question2": "What is your favorite book?",
+    "answer2": "1984"
+    }
+},
+{
+    "id": 12,
+    "username": "rock_music_fan",
+    "password": "musicRocks12",
+    "email": "rock.music.fan@hotmail.com",
+    "name": "Laura",
+    "last name": "Johnson",
+    "age": 55,
+    "phone number": "+55555555512",
+    "account type": "administrator",
+    "account status": false,
+    "security questions and answers": {
+    "question1": "What is your favorite music genre?",
+    "answer1": "Rock",
+    "question2": "What is your favorite childhood memory?",
+    "answer2": "Summer vacations at the beach"
+    }
+},
+{
+    "id": 13,
+    "username": "movie_buff",
+    "password": "cinemaLover27",
+    "email": "movie.buff@gmail.com",
+    "name": "Michael",
+    "last name": "Thompson",
+    "age": 27,
+    "phone number": "+12345678913",
+    "account type": "user",
+    "account status": true,
+    "security questions and answers": {
+    "question1": "What is your favorite movie?",
+    "answer1": "Inception",
+    "question2": "What is your favorite hobby?",
+    "answer2": "Painting"
+    }
+},
+{
+    "id": 14,
+    "username": "travel_photog",
+    "password": "worldTraveler33",
+    "email": "travel.photog@hotmail.com",
+    "name": "Olivia",
+    "last name": "Smith",
+    "age": 33,
+    "phone number": "+98765432114",
+    "account type": "user",
+    "account status": true,
+    "security questions and answers": {
+    "question1": "What is your dream job?",
+    "answer1": "Travel Photographer",
+    "question2": "What is your favorite childhood game?",
+    "answer2": "Hide and Seek"
+    }
+},
+{
+    "id": 15,
+    "username": "italian_foodie",
+    "password": "pastaLover32",
+    "email": "italian.foodie@outlook.com",
+    "name": "Sophia",
+    "last name": "Brown",
+    "age": 32,
+    "phone number": "+55555555515",
+    "account type": "user",
+    "account status": false,
+    "security questions and answers": {
+    "question1": "What is your favorite cuisine?",
+    "answer1": "Italian",
+    "question2": "What is your mother's maiden name?",
+    "answer2": "Miller"
+    }
+},
+{
+    "id": 16,
+    "username": "soccer_fanatic",
+    "password": "goalGetter30",
+    "email": "soccer.fanatic@gmail.com",
+    "name": "Daniel",
+    "last name": "Wilson",
+    "age": 30,
+    "phone number": "+12345678916",
+    "account type": "user",
+    "account status": true,
+    "security questions and answers": {
+    "question1": "What is your favorite sport?",
+    "answer1": "Soccer",
+    "question2": "Who is your role model?",
+    "answer2": "Nelson Mandela"
+    }
+},
+{
+    "id": 17,
+    "username": "paris_traveler",
+    "password": "eiffelTower47",
+    "email": "paris.traveler@gmail.com",
+    "name": "Ella",
+    "last name": "Smith",
+    "age": 47,
+    "phone number": "+98765432117",
+    "account type": "administrator",
+    "account status": true,
+    "security questions and answers": {
+    "question1": "What is your favorite holiday destination?",
+    "answer1": "Paris",
+    "question2": "What is your favorite book genre?",
+    "answer2": "Science Fiction"
+    }
+},
+{
+    "id": 18,
+    "username": "tiger_lover",
+    "password": "wildCat18",
+    "email": "tiger.lover@hotmail.com",
+    "name": "William",
+    "last name": "Johnson",
+    "age": 52,
+    "phone number": "+55555555518",
+    "account type": "administrator",
+    "account status": true,
+    "security questions and answers": {
+    "question1": "What is your favorite animal?",
+    "answer1": "Tiger",
+    "question2": "What is your favorite movie?",
+    "answer2": "The Matrix"
+    }
+},
+{
+    "id": 19,
+    "username": "nature_lover",
+    "password": "outdoorLife26",
+    "email": "nature.lover@gmail.com",
+    "name": "Grace",
+    "last name": "Miller",
+    "age": 26,
+    "phone number": "+12345678919",
+    "account type": "user",
+    "account status": false,
+    "security questions and answers": {
+    "question1": "What is your favorite color?",
+    "answer1": "Green",
+    "question2": "Who is your favorite actor?",
+    "answer2": "Tom Hanks"
+    }
+},
+{
+    "id": 20,
+    "username": "tesla_fan",
+    "password": "electricDream34",
+    "email": "tesla.fan@gmail.com",
+    "name": "James",
+    "last name": "Smith",
+    "age": 34,
+    "phone number": "+98765432120",
+    "account type": "user",
+    "account status": true,
+    "security questions and answers": {
+    "question1": "What is your dream car?",
+    "answer1": "Tesla Model 3",
+    "question2": "What is your favorite childhood memory?",
+    "answer2": "Summer vacations at the beach"
+    }
+}
+]
