@@ -1,0 +1,90 @@
+// variables setup
+@colors: rgb(38, 189, 223), rgb(0, 217, 255), rgba(0, 0, 0, 0.2), red, rgb(255,255,240);
+@tablecolors: #000000, #b8b0f2, #313030;
+@sizes: range(22px, 14px, 32px, 6px);
+@families: serif, sans-serif, monospace, fantasy, Trebuchet MS;
+@paddingVertical: 35px;
+@paddingHorizontal: 8px;
+@colorsbttn: #33bdef, #019ad2, #057fd0, #ffffff;
+
+
+// login
+body { 
+    background-image: url('image/background.png');
+    font-family: extract(@families, 3); 
+    font-size: extract(@sizes, 0);
+
+} 
+
+.container  {
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: extract(@colors, 5); 
+    padding: @paddingVertical @paddingHorizontal;
+    border-radius: 20px; 
+    box-shadow: 0 0 10px extract(@colors, 3);
+    font-size: extract(@sizes, 0);
+    font-size: 18px;
+}
+
+
+.section { 
+    width: 300px;
+    margin-bottom: 15px;
+} 
+
+.field {
+    margin-top: 6px;
+    border-radius: 30px; 
+}
+
+// login button 
+.loginbtn {
+    box-shadow: 0px 1px 0px 0px #f0f7fa;
+    background: linear-gradient(to bottom, extract(@colorsbttn, 1) 5%, extract(@colorsbttn, 2) 100%);
+    background-color: extract(@colorsbttn, 1);
+    border-radius: 20px;
+    border: 2px solid extract(@colorsbttn, 3);
+    display: inline-block;
+    cursor: pointer;
+    color: extract(@colorsbttn, 4);
+    font-family: extract(@families, 5);
+    font-size: 16px;
+    font-weight: bold;
+    padding: 9px 25px;
+    text-decoration: none;
+    text-shadow: 0px -1px 0px #5b6178;
+}
+
+.loginbtn:hover {
+    background: linear-gradient(to bottom, extract(@colorsbttn, 2) 5%, extract(@colorsbttn, 1) 100%);
+    background-color: extract(@colorsbttn, 2);
+}
+
+.loginbtn:active {
+    position: relative;
+    top: 1px;
+}
+
+// tables
+.demTable {
+    border: 1px solid extract(@tablecolors, 2);
+    border-collapse: collapse;
+    padding: 5px;
+}
+.demTable th {
+    border: 1px solid extract(@tablecolors, 1);
+    padding: 5px;
+    background: extract(@tablecolors, 2);
+    color: extract(@tablecolors, 3);
+}
+.demTable td {
+    border: 1px solid extract(@tablecolors, 1);
+    text-align: center;
+    padding: 5px;
+    background: extract(@tablecolors, 2);
+    color: extract(@tablecolors, 3);
+}
