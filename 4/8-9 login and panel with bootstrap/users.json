@@ -1,0 +1,18 @@
+[
+    {
+        "id": "1",
+        "username": "johnsmith",
+        "password": "password123",
+        "email": "johnsmith@hotmail.com",
+        "name": "John",
+        "last name": "Smith",
+        "age": "25",
+        "Phone number": "123456789",
+        "Account type": "user",
+        "Account status": true,
+        "security questions and answers": {
+            "Question1": "What is your mother's maiden name?", 
+            "Answer1": "Woods"
+        }
+    }
+]
